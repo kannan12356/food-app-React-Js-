@@ -1,0 +1,38 @@
+.special-dishes{
+    margin: 30px auto;
+    text-align: center;
+    width: 700px;
+    justify-content: center;
+}
+
+.special-dishes > h2{
+    margin-bottom: 20px;
+}
+
+.dish-menu{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-wrap: wrap;
+    list-style: none;
+}
+
+.dish-img{
+    width: 250px;
+    object-fit: cover;
+    border-radius: 10px;
+    height: 200px;
+    margin-bottom: 10px;
+}
+
+.dish-item{
+    border-radius: 10px;
+    padding: 10px;
+    margin: 20px;
+    transition: 0.4s ease-in-out;
+}
+
+.dish-item:hover{
+    transform: scale(1.03);
+    box-shadow: 0px 0px 10px 0px rgba(0,0,0,0.75);
+}
