@@ -1,0 +1,23 @@
+.pagination{
+    display: flex;
+    margin-top: 30px;
+    justify-content: center;
+}
+
+.pagination-list{
+    list-style: none;
+    display: flex;
+}
+
+.page-number{    
+    width: 20px;
+    margin: 5px;
+    padding: 5px;
+    cursor: pointer;
+    border: 1px solid orange;
+}
+
+.page-active, .page-number:hover{    
+    background-color: orange;
+    color: black;
+}
