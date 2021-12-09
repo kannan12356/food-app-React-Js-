@@ -1,12 +1,48 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
+import './FilterDishes.css';
+import { AllMenuContext } from '../AllMenuContext';
+import CardDishes from '../CardDishes/CardDishes';
 import Pagination from '../Pagination/Pagination';
-import './FilterDishes.css'
 
-function FilterDishes(props) {    
-    const [categorisedDishes, setCategorisedDishes] = useState([])
-    const [activeDish, setActiveDish] = useState('Beef');
-    const [currentPage, setCurrentPage] = useState(1);
+function FilterDishes() {
     
+    const allMenus = useContext(AllMenuContext);
+
+    //menu categories
+    const [menuCategories, setMenuCategories] = useState([]);
+    
+    //active dishes
+    const [activeDish, setActiveDish] = useState('Beef');
+
+    //categorised dishes
+    const [categorisedDishes, setCategorisedDishes] = useState([])
+
+    const [singleCategoryData, setSingleCategoryData] = useState([]);
+
+    //current page number
+    const [currentPage, setCurrentPage] = useState(1);
+
+
+
+    const fetchCategoryData = () => {
+        fetch("https://www.themealdb.com/api/json/v1/1/categories.php")
+        .then((response) => response.json())
+        .then((categoriesData) => setMenuCategories(categoriesData.categories)            
+        );        
+    }
+
+    const fetchSingleCategoryData = () => {
+        fetch("https://www.themealdb.com/api/json/v1/1/filter.php?c=Beef")  
+        .then((response) => response.json())
+        .then((singleDishCategoryData) => setSingleCategoryData(singleDishCategoryData.meals)            
+        );
+    }
+
+    useEffect(()=>{    
+        fetchCategoryData();
+        fetchSingleCategoryData();
+    }, []);
+
     let itemsPerPage = 4;
 
     let indexOfLastDish = currentPage * itemsPerPage;
@@ -15,28 +51,29 @@ function FilterDishes(props) {
 
     let showTheseDishes = categorisedDishes.slice(indexOfFirstDish, indexOfLastDish);
 
-    let singleCategoryData = props.singleCategoryData.map((item, index)=>{
-        return (
-            <li key={index} className="dish-item">
-                <img 
-                    className="dish-img"
-                    src={item.strMealThumb} 
-                    alt="dishes" 
-                />
-                <h4>{item.strMeal}</h4>
-            </li>
-        )
-    })
-    
-
     const showFilteredDishes = (category)=>{        
-        let filteredDishes = props.allMenus.filter((item)=>{
+        let filteredDishes = allMenus.filter((item)=>{
             return item.strCategory === category
         })
         setCategorisedDishes(filteredDishes);    
         setActiveDish(category);
-        props.setSingleCategoryData([]);
+        setSingleCategoryData([]);
     }
+
+        
+    let singleData = singleCategoryData.map((item, index)=>{
+        if(index > 3){
+            return '';
+        }
+        return (
+            <CardDishes 
+                key={index}
+                imgSrc={item.strMealThumb}
+                mealName={item.strMeal}
+            />                                    
+        )
+    })
+    
 
     return (
         <div className="filtered-dishes">
@@ -45,7 +82,7 @@ function FilterDishes(props) {
             <div className="filtered-dishes">
                 <ul className="category-menu">
                     {
-                        props.categoryMenu.map((categoryItem, index)=>{
+                        menuCategories.map((categoryItem, index)=>{
                             return(
                                 <li 
                                     key={index} 
@@ -60,19 +97,18 @@ function FilterDishes(props) {
             </div>
             <div className="special-dishesMenu">
                 <ul className="dish-menu">
-                    {singleCategoryData}
+                    {singleData}
                     {   
-                        singleCategoryData.length > 0 || categorisedDishes.length > 0 ?
+                        singleData.length > 0 || categorisedDishes.length > 0 ?
                             showTheseDishes.map((item, index)=>{
                                 return (
-                                    <li key={index} className="dish-item">
-                                        <img 
-                                            className="dish-img"
-                                            src={item.strMealThumb} 
-                                            alt="dishes" 
-                                        />
-                                        <h4>{item.strMeal}</h4>
-                                    </li>
+                                    <>
+                                    <CardDishes 
+                                        key={index}
+                                        imgSrc={item.strMealThumb}
+                                        mealName={item.strMeal}
+                                    />  
+                                    </>
                                 )
                             
                             }) :
@@ -86,7 +122,6 @@ function FilterDishes(props) {
                 <Pagination 
                     categoryDishes={categorisedDishes}
                     itemsPerPage={itemsPerPage}
-                    currentPage={currentPage}
                     setCurrentPage = {setCurrentPage}
                 />
             </div>

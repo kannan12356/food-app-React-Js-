@@ -3,7 +3,6 @@ import './Pagination.css';
 
 function Pagination(props) {
     let categoryDishes = props.categoryDishes;
-    let currentPage = props.currentPage;
     
     let pages = [];
 
@@ -23,7 +22,7 @@ function Pagination(props) {
                         return <li  key={i}
                                     id={pageNumber} 
                                     onClick={pageChangeHandler} 
-                                    className={currentPage === pageNumber ? 'page-number page-active' : 'page-number'}>
+                                    className="page-number">
                                         {pageNumber}
                                 </li>
                     })

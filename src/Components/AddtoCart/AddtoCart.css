@@ -1,0 +1,24 @@
+.add-to-cart{
+    width: 100px;
+    position: fixed;
+    top: 40%;
+    right: 0;
+    background-color: white;
+    box-shadow: 2px 2px 12px rgba(0, 0, 0, 0.8);
+    padding: 5px;
+    border-radius: 5px;
+}
+
+.add-to-cart-item{
+    text-align: center;
+    margin: 10px 0px;
+}
+
+.add-to-cart-item > img{
+    width: 100px;
+    height: 70px;
+    border-radius: 5px;
+    object-fit: cover;
+    text-align: center;    
+}
+
