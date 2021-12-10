@@ -1,15 +1,19 @@
 import React, { useContext } from 'react';
 import './Popup.css';
 import { AllMenuContext } from '../AllMenuContext';
+import { DispatchContext } from '../../Context/AppProvider';
 
 function Popup({closePopup, currentDish, addToCartHandler}) {
-    const allMenus = useContext(AllMenuContext)
+    
+    const allMenus = useContext(AllMenuContext);
+
+    const dispatch = useContext(DispatchContext);
 
     let dishDetails = allMenus.filter((menuItem)=>{
         return menuItem.strMeal === currentDish
-    }).map((item)=>{
+    }).map((item, index)=>{
         return(
-            <div className="popup-content-data">
+            <div className="popup-content-data" key={index}>
                 <div className="popup-header">
                     <img src={item.strMealThumb} alt="item" />
                     <h5 className="popup-header-category">{item.strCategory}</h5>
@@ -28,7 +32,15 @@ function Popup({closePopup, currentDish, addToCartHandler}) {
                 </ul>
 
                 <h4>₹ 235/-</h4>
-                <button onClick={()=>addToCartHandler(item.strMealThumb, item.strMeal)}>Add to Cart</button>                             
+                <button onClick={()=>dispatch({
+                        type: 'add-to-cart', 
+                        payload: {
+                            "img": item.strMealThumb,
+                            "title" : item.strMeal
+                        }
+                    })}>
+                    Add to Cart
+                </button>   
                 <h5 className="popup-close" onClick={closePopup}>Close</h5>
             </div>
         )

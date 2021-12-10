@@ -6,26 +6,29 @@ import Header from '../Header/Header';
 import AllMenus from '../AllMenuContext';
 import {BrowserRouter as Router, Routes, Route} from 'react-router-dom';
 import Checkout from '../Checkout/Checkout';
+import {AppProvider} from '../../Context/AppProvider';
 
 
 function Menus() {
     return (
         <div>
             <Router>
-                <Header/>
-                <Home/>
-                <Routes>
-                    <Route 
-                        path="/" 
-                        element={
-                            <AllMenus>
-                                <SpecialDishes/>
-                                <FilterDishes/> 
-                            </AllMenus>
-                        } 
-                    />
-                    <Route path="/checkout" element={<Checkout/>} />
-                </Routes>
+                <AppProvider>
+                    <Header/>
+                    <Home/>
+                    <Routes>
+                        <Route 
+                            path="/" 
+                            element={
+                                <AllMenus>
+                                    <SpecialDishes/>
+                                    <FilterDishes/> 
+                                </AllMenus>
+                            } 
+                        />
+                        <Route path="/checkout" element={<Checkout/>} />
+                    </Routes>
+                </AppProvider>
             </Router>
             
         </div>
